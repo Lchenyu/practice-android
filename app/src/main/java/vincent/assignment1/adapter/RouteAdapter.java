@@ -58,7 +58,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RouteAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RouteAdapter.ViewHolder holder, int position) {
         final SimpleRoute routeObj = routeList.get(position);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
@@ -70,9 +70,14 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // change color and set selected route
+
                 v.setBackgroundColor(Color.parseColor("#9af9e0"));
                 TrackingHolder.getINSTANCE().setSelectedRoute(routeObj);
-
+                if(TrackingHolder.getINSTANCE().getHolder() != null){
+                    TrackingHolder.getINSTANCE().getHolder().itemView.setBackgroundColor(Color.parseColor("#f2f2f2"));
+                }
+                TrackingHolder.getINSTANCE().setHolder(holder);
 
             }
         });

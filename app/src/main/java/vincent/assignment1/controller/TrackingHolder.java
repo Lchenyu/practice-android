@@ -1,9 +1,14 @@
 package vincent.assignment1.controller;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import vincent.assignment1.adapter.RouteAdapter;
+import vincent.assignment1.database.MyDatabaseHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTracking;
 
@@ -17,6 +22,9 @@ public class TrackingHolder {
     private static TrackingHolder INSTANCE = null;
     private List<SimpleTracking> trackingList = new ArrayList<>();
     private SimpleRoute selectedRoute;
+    private RecyclerView.ViewHolder holder;
+
+
 
 
     public static TrackingHolder getINSTANCE() {
@@ -28,6 +36,14 @@ public class TrackingHolder {
     }
 
 
+    public void setHolder(RecyclerView.ViewHolder holder) {
+        this.holder = holder;
+    }
+
+    public RecyclerView.ViewHolder getHolder(){
+        return this.holder;
+    }
+
     //return list sorted by meet_time
     public List<SimpleTracking> getTrackingList(){
         Collections.sort(trackingList, new DateComparator());
@@ -35,6 +51,7 @@ public class TrackingHolder {
     }
 
     public void addTracking(SimpleTracking trackingObj){
+
         this.trackingList.add(trackingObj);
     }
 

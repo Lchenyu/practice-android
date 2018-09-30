@@ -1,29 +1,33 @@
 <resources>
     <string name="app_name">Assignment1</string>
 
+    <string name="google_map_api_key">AIzaSyD7AnePaZwTJaJt5m_XMkXXFVIPWSQcypE</string>
+
 
     <!--trackable_layout-->
-    <item type="id" name="category_spinner"/>
-    <item type="id" name="main_recycler_view"/>
-    <item type="id" name="trackable_layout"/>
-    <item type="id" name="my_toolbar"/>
+    <item name="category_spinner" type="id" />
+    <item name="main_recycler_view" type="id" />
+    <item name="trackable_layout" type="id" />
+    <item name="my_toolbar" type="id" />
     <string name="spinner_name">Category:</string>
+    <item name="suggestionBtn" type="id" />
+    <string name="suggestion_btn">suggestion</string>
 
     <!--list_trackable_layout-->
-    <item type="id" name="list_trackable_image"/>
-    <item type="id" name="list_trackable_id"/>
-    <item type="id" name="list_trackable_name"/>
-    <item type="id" name="list_trackable_description"/>
-    <item type="id" name="list_trackable_category"/>
+    <item name="list_trackable_image" type="id" />
+    <item name="list_trackable_id" type="id" />
+    <item name="list_trackable_name" type="id" />
+    <item name="list_trackable_description" type="id" />
+    <item name="list_trackable_category" type="id" />
 
     <!--adding_layout-->
-    <item type="id" name="adding_trackable_name"/>
-    <item type="id" name="adding_save_btn"/>
-    <item type="id" name="adding_trackingtitle_input"/>
-    <item type="id" name="add_date_picker"/>
-    <item type="id" name="route_content_view"/>
-    <item type="id" name="add_time_picker"/>
-    <item type="id" name="route_info_btn"/>
+    <item name="adding_trackable_name" type="id" />
+    <item name="adding_save_btn" type="id" />
+    <item name="adding_trackingtitle_input" type="id" />
+    <item name="add_date_picker" type="id" />
+    <item name="route_content_view" type="id" />
+    <item name="add_time_picker" type="id" />
+    <item name="route_info_btn" type="id" />
     <string name="text_tracking_title">tracking title : </string>
     <string name="adding_hint">enter tracking title name</string>
     <string name="adding_save">Save</string>
@@ -31,40 +35,43 @@
     <string name="adding_date_hint">click to set date</string>
     <string name="adding_searching_window">search window :</string>
     <string name="adding_time_hint">click to set time</string>
-    <string name="adding_routeinfo_btn">route Info</string>
+    <string name="adding_routeinfo_btn">refresh</string>
     <string name="search_window_hint">20 minutes</string>
 
     <!--edit_layout-->
     <string name="edit_title_hint">Title :</string>
     <string name="meet_time_hint">Meet Time :</string>
     <string name="edit_savechange_btn">Save Change</string>
-    <item type="id" name="edit_tracking_title"/>
-    <item type="id" name="edit_edit_title"/>
-    <item type="id" name="edit_time_spinner"/>
-    <item type="id" name="edit_save_btn"/>
+    <item name="edit_tracking_title" type="id" />
+    <item name="edit_edit_title" type="id" />
+    <item name="edit_time_spinner" type="id" />
+    <item name="edit_save_btn" type="id" />
 
     <!--list_route_layout-->
     <string name="list_route_stop_hint">stop :</string>
     <string name="list_route_minutes_text">    minutes</string>
-    <item type="id" name="route_date_time"/>
-    <item type="id" name="route_station"/>
-    <item type="id" name="route_duration"/>
+    <item name="route_date_time" type="id" />
+    <item name="route_station" type="id" />
+    <item name="route_duration" type="id" />
 
     <!--list_tracking_layout-->
     <string name="tracking_trackable_text">trackable :</string>
     <string name="tracking_meeton">Meet On :</string>
     <string name="at">At : </string>
     <string name="current_at">Current At :</string>
-    <item type="id" name="tracking_title"/>
-    <item type="id" name="tracking_trackable_name"/>
-    <item type="id" name="tracking_meet_location"/>
-    <item type="id" name="tracking_meet_time"/>
-    <item type="id" name="current_location"/>
+    <item name="tracking_title" type="id" />
+    <item name="tracking_trackable_name" type="id" />
+    <item name="tracking_meet_location" type="id" />
+    <item name="tracking_meet_time" type="id" />
+    <item name="current_location" type="id" />
 
     <!--tracking_layout-->
-    <item type="id" name="tracking_recycler_view"/>
+    <item name="tracking_recycler_view" type="id" />
     <string name="swipe_hint">Swipe to edit (LEFT) or delete (RIGHT)</string>
     <string name="sorted_hint">All Items Are Sorted By Date/Time</string>
+    <string name="title_activity_maps">Map</string>
 
+    <!--suggestion-->
+    <item name="suggestion_recycler_view" type="id"/>
 
 </resources>

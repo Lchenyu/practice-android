@@ -1,5 +1,7 @@
 package vincent.assignment1.controller.evetsListener;
 
+import android.content.Intent;
+import android.icu.util.Calendar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -7,13 +9,17 @@ import android.view.View;
 import java.text.DateFormat;
 import java.text.ParseException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import vincent.assignment1.adapter.RouteAdapter;
+import vincent.assignment1.googleMaps.MyTrackerMapHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.service.TrackingService;
+import vincent.assignment1.view.MapsActivity;
 
 /**
  * @author Yu Liu
@@ -28,16 +34,11 @@ import vincent.assignment1.service.TrackingService;
 
 public class RouteInfoBtnOnClickListener implements View.OnClickListener {
 
-
-    private String pickedDateAndTime;
-
     private List<TrackingService.TrackingInfo> tempMatch;
     private int trackableid;
     private RecyclerView routeContentRecyclerView;
 
-    public RouteInfoBtnOnClickListener(String pickedDateAndTime, int trackableID, RecyclerView routeRecyclerView){
-
-        this.pickedDateAndTime = pickedDateAndTime;
+    public RouteInfoBtnOnClickListener(int trackableID, RecyclerView routeRecyclerView){
         this.trackableid = trackableID;
         this.routeContentRecyclerView = routeRecyclerView;
     }
@@ -46,16 +47,25 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
     public void onClick(View v) {
 
         try{
+
+            Date currentTime = Calendar.getInstance().getTime();
+            SimpleDateFormat curDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
+
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-            Date date = dateFormat.parse(pickedDateAndTime);
+            Date date = dateFormat.parse(curDateFormat.format(currentTime));
+
+            Log.d("maptest", "current time on refresh" + date.toString());
 
             List<TrackingService.TrackingInfo> matched = TrackingService.getSingletonInstance(v.getContext())
-                    .getTrackingInfoForTimeRange(date, 20, 0);
-
+                    .getTrackingInfoForTimeRange(date, 60, 0);
 
             final RouteAdapter adapter = new RouteAdapter(getRouteList(matched));
             routeContentRecyclerView.setAdapter(adapter);
-            TrackingService.getSingletonInstance(v.getContext()).log(tempMatch);
+            //TrackingService.getSingletonInstance(v.getContext()).log(tempMatch);
+
+            Intent intent = new Intent(v.getContext(), MapsActivity.class);
+            intent.putExtra("trackid", ""+trackableid);
+            v.getContext().startActivity(intent);
 
         }
         catch (ParseException e)
@@ -63,7 +73,6 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-
 
     /**
      *
@@ -76,7 +85,7 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
         Log.i("test++++", String.valueOf(trackableid));
 
         for(TrackingService.TrackingInfo routeInfo : matched){
-            if(routeInfo.stopTime > 0 && routeInfo.trackableId == trackableid){
+            if(routeInfo.trackableId == trackableid){
                 //implement builder pattern later
                 SimpleRoute routeObj = new SimpleRoute();
                 routeObj.setDate(routeInfo.date);
@@ -86,9 +95,12 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
                 routeList.add(routeObj);
                 tempMatch.add(routeInfo);
 
-                Log.i("test++++", String.valueOf(routeObj.getLatitude() + " " + String.valueOf(routeObj.getLongitude())));
+//                Log.d("Maptest", routeInfo.date.toString());
+
             }
         }
+
+        MyTrackerMapHelper.getINSTANCE().setRouteList(routeList);
 
         return routeList;
     }

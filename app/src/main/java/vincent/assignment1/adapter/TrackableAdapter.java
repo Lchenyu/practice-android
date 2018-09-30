@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class TrackableAdapter extends RecyclerView.Adapter<TrackableAdapter.View
         mSimpleTrackableList = temp;
         notifyDataSetChanged();
 
+    }
+
+    public List<SimpleTrackable> getFilteredTrackableList() {
+        return this.mSimpleTrackableList;
     }
 
 

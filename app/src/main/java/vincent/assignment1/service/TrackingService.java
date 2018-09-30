@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Scanner;
 
 import vincent.assignment1.R;
 
+//import mad.geo.R;
 
 public class TrackingService
 {
@@ -86,7 +88,7 @@ public class TrackingService
       try (Scanner scanner = new Scanner(context.getResources().openRawResource(R.raw.tracking_data)))
       {
          // match comma and 0 or more whitespace OR trailing space and newline
-         scanner.useDelimiter(",\\s*|\\s*\\n");
+         scanner.useDelimiter(",\\s*|\\s*\\n+");
          while (scanner.hasNext())
          {
             TrackingInfo trackingInfo = new TrackingInfo();
@@ -101,6 +103,7 @@ public class TrackingService
                next=next.substring(0, commentPos);
             trackingInfo.longitude = Double.parseDouble(next);
             trackingList.add(trackingInfo);
+            Log.d("Maptest", trackingInfo.date.toString());
          }
       }
       catch (Resources.NotFoundException e)

@@ -16,16 +16,21 @@ import vincent.assignment1.adapter.TrackingAdapter;
 import vincent.assignment1.controller.SwipeManager;
 import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.controller.evetsListener.SwiperControlOnSwipeListener;
+import vincent.assignment1.database.MyDatabaseHelper;
 import vincent.assignment1.model.SimpleTracking;
 
 public class TrackingActivity extends AppCompatActivity {
 
     private List<SimpleTracking> trackingList;
+    private MyDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tracking_layout);
+
+
+        //dbHelper = new MyDatabaseHelper(this, "assignment.db");
 
         trackingList = TrackingHolder.getINSTANCE().getTrackingList();
 
@@ -59,4 +64,9 @@ public class TrackingActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

@@ -1,6 +1,13 @@
 package vincent.assignment1.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
+
+import junit.framework.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +27,14 @@ import java.util.List;
 import vincent.assignment1.R;
 import vincent.assignment1.controller.TrackableReader;
 import vincent.assignment1.adapter.TrackableAdapter;
+import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.controller.evetsListener.CategorySpinnerOnItemSelectedListener;
+import vincent.assignment1.controller.evetsListener.SuggestionOnClickListener;
+import vincent.assignment1.database.MyDatabaseHelper;
+import vincent.assignment1.googleMaps.MyGoogleMapPermissionChecker;
+import vincent.assignment1.googleMaps.MyLocationListener;
 import vincent.assignment1.model.SimpleTrackable;
+import vincent.assignment1.service.TestTrackingService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,11 +45,21 @@ public class MainActivity extends AppCompatActivity {
     private TrackableReader trackableReader;
     private RecyclerView recyclerView;
     private Spinner categorySpinner;
+    private Button suggestionBtn;
+
+    private MyDatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+
+    private boolean mLocationPermission = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trackable_layout);
+
+
+        suggestionBtn = (Button) findViewById(R.id.suggestionBtn);
 
         //set ToolBar instead of ActionBar
         myToolBar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -48,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
         trackableReader = TrackableReader.getINSTANCE(this);
         simpleTrackableList = trackableReader.getTrackableList();
         categoryList = trackableReader.getCategroyList();
-        //readTrackable(simpleTrackableList);
-
-
 
         //set recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
@@ -61,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         //set spinner
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
-
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -75,21 +97,30 @@ public class MainActivity extends AppCompatActivity {
         categorySpinner.setAdapter(spinnerAdapter);
         categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(adapter));
 
-//        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                adapter.getFilter(parent.getItemAtPosition(position).toString());
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+        //create database if there is no db
+        dbHelper = new MyDatabaseHelper(this, "assignment.db");
+        db = dbHelper.getWritableDatabase();
+        //loading trackable list into db
+        dbHelper.InsertTrackableDB(trackableReader.getTrackableList(), db);
+        //loading tracking list into tracking holder
+        dbHelper.loadTrackingDB(db);
 
+
+
+
+
+
+
+        suggestionBtn.setOnClickListener(new SuggestionOnClickListener(adapter, this));
 
     }
 
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,50 +140,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private void readTrackable(List<SimpleTrackable> list){
-//        int id;
-//        String name;
-//        String description;
-//        String url;
-//        String cateGory;
-//        addCategoryList("All");
-//        try (Scanner reader = new Scanner(getResources().openRawResource(R.raw.food_truck_data)))
-//        {
-//            // match comma and 0 or more whitespace OR trailing space and newline
-//
-//            reader.useDelimiter("\",\"|,\"|\"\\n");
-//            while (reader.hasNext())
-//            {
-//                id = Integer.parseInt(reader.next());
-//                name = reader.next();
-//                description = reader.next();
-//                url = reader.next();
-//                cateGory = reader.next();
-//
-//                addCategoryList(cateGory);
-//
-//                SimpleTrackable food_truck = new SimpleTrackable(id,name,description,cateGory,url,0);
-//
-//                list.add(food_truck);
-//            }
-//        }
-//        catch (Resources.NotFoundException e)
-//        {
-//            Log.i(LOG_TAG, "File Not Found Exception Caught");
-//        }
-//
-//    }
-//
-//
-//    private void addCategoryList(String caterGory){
-//        boolean flag = false;
-//        for(String c : categroyList){
-//            if(c.equals(caterGory))
-//                flag = true;
-//        }
-//
-//        if(!flag) {
-//            categroyList.add(caterGory);
-//        }
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //close db connection when the app turn off
+        dbHelper.InsertTrackingDB(TrackingHolder.getINSTANCE().getTrackingList(),dbHelper.getWritableDatabase());
+        dbHelper.close();
+    }
+
+
+
 }
