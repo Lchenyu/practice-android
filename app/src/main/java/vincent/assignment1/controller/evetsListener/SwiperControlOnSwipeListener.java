@@ -6,6 +6,7 @@ import android.content.Intent;
 import vincent.assignment1.adapter.TrackingAdapter;
 import vincent.assignment1.controller.SwipeControlAction;
 import vincent.assignment1.controller.TrackingHolder;
+import vincent.assignment1.database.DeleteTrackingTask;
 import vincent.assignment1.view.EditActivity;
 
 public class SwiperControlOnSwipeListener implements SwipeControlAction {
@@ -24,7 +25,11 @@ public class SwiperControlOnSwipeListener implements SwipeControlAction {
 
     @Override
     public void onRightClicked(int position) {
+
+        DeleteTrackingTask deleteTrackingTask = new DeleteTrackingTask(activity, TrackingHolder.getINSTANCE().getTrackingList().get(position).getTrackingID());
+        deleteTrackingTask.execute();
         TrackingHolder.getINSTANCE().deleteTracking(position);
+
         adapter.notifyItemRemoved(position);
         adapter.notifyItemRangeChanged(position,adapter.getItemCount());
     }

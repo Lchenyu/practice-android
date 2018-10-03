@@ -9,8 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.UUID;
 
 import vincent.assignment1.controller.TrackingHolder;
+import vincent.assignment1.database.InsertTrackingTask;
 import vincent.assignment1.database.MyDatabaseHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTracking;
@@ -18,13 +20,13 @@ import vincent.assignment1.model.SimpleTracking;
 public class AddSaveBtnOnClickListener implements View.OnClickListener {
 
     private int trackableid;
-    private Activity context;
+    private Activity activity;
     private TextView trackingTitle;
 
 
-    public AddSaveBtnOnClickListener (int trackableID, TextView trackingTitle, Activity context){
+    public AddSaveBtnOnClickListener (int trackableID, TextView trackingTitle, Activity activity){
         this.trackableid = trackableID;
-        this.context = context;
+        this.activity = activity;
         this.trackingTitle = trackingTitle;
     }
 
@@ -51,9 +53,16 @@ public class AddSaveBtnOnClickListener implements View.OnClickListener {
                 cl.add(Calendar.MINUTE, routeObj.getStopTime());
                 trackingObj.setTargetEndTime(cl.getTime());
 
+                String id = UUID.randomUUID().toString();
+                trackingObj.setTrackingID(id);
+
+                //add a tracking object into database
+                InsertTrackingTask insertTrackingTask = new InsertTrackingTask(activity, trackingObj);
+                insertTrackingTask.execute();
+
                 holder.addTracking(trackingObj);
                 holder.cleanRoute();
-                context.finish();
+                activity.finish();
             } else {
                 Toast.makeText(v.getContext(), "Pick stop time > 0", Toast.LENGTH_LONG).show();
             }

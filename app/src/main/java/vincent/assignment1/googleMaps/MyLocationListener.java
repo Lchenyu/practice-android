@@ -7,9 +7,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import vincent.assignment1.view.SuggestActivity;
+import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 
 
 public class MyLocationListener implements LocationListener{
@@ -29,9 +27,8 @@ public class MyLocationListener implements LocationListener{
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
 
-        ((SuggestActivity) activity).setCurrentLocation(location.getLatitude()+"," + location.getLongitude());
+        SuggestionControl.initializeInsance(location.getLatitude()+"," + location.getLongitude());
 
-        Log.d("GPStest", location.getLatitude() + "     " + location.getLongitude());
     }
 
     @Override

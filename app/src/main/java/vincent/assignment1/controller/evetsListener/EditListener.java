@@ -1,6 +1,7 @@
 package vincent.assignment1.controller.evetsListener;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import vincent.assignment1.controller.TrackingHolder;
+import vincent.assignment1.database.UpdateTrackingTask;
 import vincent.assignment1.model.SimpleTracking;
 
 public class EditListener {
@@ -66,6 +68,20 @@ public class EditListener {
             String newTitle = editView.getText().toString();
             TrackingHolder.getINSTANCE().getTrackingList().get(index).setTilte(newTitle);
             TrackingHolder.getINSTANCE().getTrackingList().get(index).setMeetTime(selectedDate);
+
+            String key = TrackingHolder.getINSTANCE().getTrackingList().get(index).getTrackingID();
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
+            ContentValues values = new ContentValues();
+            values.put("title", newTitle);
+            values.put("meetTime",dateformat.format(selectedDate));
+
+            if(key != null){
+                UpdateTrackingTask updateTrackingTask = new UpdateTrackingTask(activity, values, key);
+                updateTrackingTask.execute();
+            }
+
+
+
             activity.finish();
         }
     }

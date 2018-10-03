@@ -1,5 +1,6 @@
 package vincent.assignment1.controller;
 
+import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import vincent.assignment1.adapter.RouteAdapter;
+import vincent.assignment1.database.DeleteTrackingTask;
 import vincent.assignment1.database.MyDatabaseHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTracking;
@@ -23,6 +25,7 @@ public class TrackingHolder {
     private List<SimpleTracking> trackingList = new ArrayList<>();
     private SimpleRoute selectedRoute;
     private RecyclerView.ViewHolder holder;
+
 
 
 
@@ -56,6 +59,9 @@ public class TrackingHolder {
     }
 
     public void deleteTracking(int position){
+
+
+
         this.trackingList.remove(position);
     }
 

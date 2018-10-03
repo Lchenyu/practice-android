@@ -1,13 +1,6 @@
 package vincent.assignment1.view;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,22 +12,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
-import junit.framework.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import vincent.assignment1.R;
 import vincent.assignment1.controller.TrackableReader;
 import vincent.assignment1.adapter.TrackableAdapter;
-import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.controller.evetsListener.CategorySpinnerOnItemSelectedListener;
 import vincent.assignment1.controller.evetsListener.SuggestionOnClickListener;
-import vincent.assignment1.database.MyDatabaseHelper;
-import vincent.assignment1.googleMaps.MyGoogleMapPermissionChecker;
-import vincent.assignment1.googleMaps.MyLocationListener;
+import vincent.assignment1.database.InsertTrackableTask;
+import vincent.assignment1.database.LoadTrackingsTask;
+import vincent.assignment1.googleMaps.MyPermissionChecker;
 import vincent.assignment1.model.SimpleTrackable;
-import vincent.assignment1.service.TestTrackingService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Spinner categorySpinner;
     private Button suggestionBtn;
-
-    private MyDatabaseHelper dbHelper;
-    private SQLiteDatabase db;
+    private MyPermissionChecker permissionChecker;
 
     private boolean mLocationPermission = false;
 
@@ -97,19 +84,10 @@ public class MainActivity extends AppCompatActivity {
         categorySpinner.setAdapter(spinnerAdapter);
         categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(adapter));
 
-        //create database if there is no db
-        dbHelper = new MyDatabaseHelper(this, "assignment.db");
-        db = dbHelper.getWritableDatabase();
-        //loading trackable list into db
-        dbHelper.InsertTrackableDB(trackableReader.getTrackableList(), db);
-        //loading tracking list into tracking holder
-        dbHelper.loadTrackingDB(db);
 
-
-
-
-
-
+        permissionChecker = new MyPermissionChecker(this);
+        permissionChecker.getLocationPermission();
+        permissionChecker.getLocation(this);
 
         suggestionBtn.setOnClickListener(new SuggestionOnClickListener(adapter, this));
 
@@ -117,10 +95,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStart() {
+        super.onStart();
 
+        LoadTrackingsTask loadTrackingsTask = new LoadTrackingsTask(this);
+        loadTrackingsTask.execute();
     }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        InsertTrackableTask insertTrackableTask = new InsertTrackableTask(trackableReader.getTrackableList(), this);
+        insertTrackableTask.execute();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,15 +130,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //close db connection when the app turn off
-        dbHelper.InsertTrackingDB(TrackingHolder.getINSTANCE().getTrackingList(),dbHelper.getWritableDatabase());
-        dbHelper.close();
-    }
-
-
 
 }

@@ -29,60 +29,69 @@ import static android.content.Context.LOCATION_SERVICE;
  * step 2: determine if GPS can be used with the APP;
  */
 
-public class MyGoogleMapPermissionChecker {
+public class MyPermissionChecker {
 
-    private boolean mLocationPermissionGranted = true;
+    //private boolean mLocationPermissionGranted = true;
     private Activity activity;
+    private static MyPermissionChecker Instance;
 
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
     public static final int PERMISSION_REQUEST_ENABLE_GPS = 9003;
 
-    public MyGoogleMapPermissionChecker(Activity activity){
+    public MyPermissionChecker(Activity activity){
         this.activity = activity;
     }
 
-    public boolean isServicesOk(){
-        int avaiable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
-
-        if (avaiable == ConnectionResult.SUCCESS){
-            //everything is fine and the user can make map requests
-            return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(avaiable)){
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(activity, avaiable, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }  else {
-            Toast.makeText(activity, "You can't make map requests", Toast.LENGTH_SHORT).show();
+    public static MyPermissionChecker getInstance(Activity activity){
+        if(Instance == null) {
+            Instance = new MyPermissionChecker(activity);
         }
 
-        return false;
+        return Instance;
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+//    public boolean isServicesOk(){
+//        int avaiable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
+//
+//        if (avaiable == ConnectionResult.SUCCESS){
+//            //everything is fine and the user can make map requests
+//            return true;
+//        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(avaiable)){
+//            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(activity, avaiable, ERROR_DIALOG_REQUEST);
+//            dialog.show();
+//        }  else {
+//            Toast.makeText(activity, "You can't make map requests", Toast.LENGTH_SHORT).show();
+//        }
+//
+//        return false;
+//    }
 
-        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            buildAlertMessageNoGps();
-            return false;
-        }
-        return true;
-    }
+//    public boolean isMapsEnabled(){
+//        final LocationManager manager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+//
+//        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//            buildAlertMessageNoGps();
+//            return false;
+//        }
+//        return true;
+//    }
 
-    private void buildAlertMessageNoGps(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent enableGpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        //get activity's onActivityResult() run
-                        activity.startActivityForResult(enableGpsIntent, PERMISSION_REQUEST_ENABLE_GPS);
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
+//    private void buildAlertMessageNoGps(){
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent enableGpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                        //get activity's onActivityResult() run
+//                        activity.startActivityForResult(enableGpsIntent, PERMISSION_REQUEST_ENABLE_GPS);
+//                    }
+//                });
+//        final AlertDialog alert = builder.create();
+//        alert.show();
+//    }
 
     public void getLocationPermission(){
         /*
@@ -93,7 +102,7 @@ public class MyGoogleMapPermissionChecker {
         if(ContextCompat.checkSelfPermission(activity.getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             Log.d("GPStest", "init permission");
-            mLocationPermissionGranted = true;
+            //mLocationPermissionGranted = true;
             getLocation(activity);
         } else {
             //after this will call activity's onRequestPermissionResult()
@@ -113,20 +122,18 @@ public class MyGoogleMapPermissionChecker {
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Log.d("GPStest", "get location call ");
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, 0, new MyLocationListener(activity));
-
+                1, 0, new MyLocationListener(activity));
     }
 
 
-    public boolean checkMapServices(){
-        if(isServicesOk()){
-            if(isMapsEnabled()){
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean checkMapServices(){
+//        if(isServicesOk()){
+//            if(isMapsEnabled()){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

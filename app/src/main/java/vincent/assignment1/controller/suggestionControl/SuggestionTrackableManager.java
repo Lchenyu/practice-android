@@ -28,12 +28,6 @@ public class SuggestionTrackableManager {
     }
 
 
-
-
-
-
-
-
     public List<SimpleRoute> getRouteInfo(){
         try{
 
@@ -46,6 +40,7 @@ public class SuggestionTrackableManager {
             List<TrackingService.TrackingInfo> matched = TrackingService.getSingletonInstance(activity)
                     .getTrackingInfoForTimeRange(date, 60, 0);
 
+            Log.d("suggestionTest", "raw matched size"+ matched.size());
 
             return getCurMatchList(matched);
         }
@@ -63,36 +58,44 @@ public class SuggestionTrackableManager {
         Date currentTime = Calendar.getInstance().getTime();
 
 
-
         for(SimpleTrackable trackable : mAvailableList){
+
             List<SimpleRoute> routeList = new ArrayList<>();
             ArrayList<Integer> timeDiffList = new ArrayList<>();
-            int index = 0;
 
+
+            //find trackable based on stop time
             for(TrackingService.TrackingInfo routeInfo : matched){
-                if(routeInfo.trackableId == trackable.getId()){
+                if(routeInfo.trackableId == trackable.getId() && routeInfo.stopTime > 0){
                     SimpleRoute routeObj = new SimpleRoute();
                     routeObj.setTrackableId(trackable.getId());
                     routeObj.setDate(routeInfo.date);
                     routeObj.setLatitude(routeInfo.latitude);
                     routeObj.setLongitude(routeInfo.longitude);
+                    routeObj.setStopTime(routeInfo.stopTime);
 
                     routeList.add(routeObj);
+//                    curMatchList.add(routeObj);
                 }
             }
 
-            for(SimpleRoute routeObj : routeList){
-                int timeDiff = getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate()));
+            //find stationary time close to current time
+            if(routeList.size() != 0){
+                for(SimpleRoute routeObj : routeList){
+                    int timeDiff = getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate()));
 
-                timeDiffList.add(timeDiff);
-            }
-
-            for(int i = 1; i < timeDiffList.size(); i++){
-                if(timeDiffList.get(i-1) > timeDiffList.get(i)){
-                    index = i;
+                    timeDiffList.add(timeDiff);
                 }
+
+                int index = 0;
+                for(int i = 1; i < timeDiffList.size(); i++){
+                    if(timeDiffList.get(index) > timeDiffList.get(i)){
+                        index = i;
+                    }
+                }
+                curMatchList.add(routeList.get(index));
             }
-            curMatchList.add(routeList.get(index));
+
         }
 
         return curMatchList;

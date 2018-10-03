@@ -19,6 +19,10 @@ import vincent.assignment1.model.SimpleTracking;
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     private Context mContext;
+    public final static String DATABASE_NAME = "assignment.db";
+    public final static String TRACKING_TABLE = "tracking";
+    public final static String TRACKABLE_TABLE = "trackable";
+
     public static final String CREATE_TRACKABLE = "CREATE TABLE trackable ("
             + "trackableID INTEGER PRIMARY KEY, "
             + "name TEXT, "
@@ -27,7 +31,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             + "webSite TEXT); ";
 
     public static final String CREATE_TRACKING = "CREATE TABLE tracking ("
-            + "trackingID INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + "trackingID INTEGER PRIMARY KEY, "
             + "trackable_id INTEGER, "
             + "title TEXT, "
             + "meetTime TEXT, "
@@ -37,8 +41,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             + "meetLocation TEXT, "
             + "FOREIGN KEY (trackable_id) REFERENCES trackable (trackableID) );" ;
 
-    public MyDatabaseHelper (Context context, String name){
-        super(context, name,  null, 1);
+    public MyDatabaseHelper (Context context){
+        super(context, DATABASE_NAME,  null, 2);
         this.mContext = context;
     }
 
@@ -53,19 +57,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     }
 
-    public void InsertTrackableDB(List<SimpleTrackable> trackableList, SQLiteDatabase db){
-        ContentValues values = new ContentValues();
-
-        for(SimpleTrackable trackable : trackableList){
-            values.put("trackableID", trackable.getId());
-            values.put("name", trackable.getName());
-            values.put("description", trackable.getDescription());
-            values.put("category", trackable.getCategory());
-            values.put("webSite", trackable.getWebSite());
-            db.insertWithOnConflict("trackable", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            values.clear();
-        }
-    }
 
     public void InsertTrackingDB(List<SimpleTracking> trackingList, SQLiteDatabase db){
         // called only
@@ -88,79 +79,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
-//    public void InsertTrackingDB(SimpleTracking trackingObj, SQLiteDatabase db){
-//
-//        ContentValues values = new ContentValues();
-//        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
-//
-//        values.put("trackingID", trackingObj.getTrackingID());
-//        values.put("trackable_id", trackingObj.getTrackableID());
-//        values.put("title", trackingObj.getTilte());
-//
-//        values.put("meetTime",dateformat.format(trackingObj.getMeetTime().getTime()));
-//        values.put("targetStartTime", dateformat.format(trackingObj.getTargetStartTime().getTime()));
-//        values.put("targetEndTime", dateformat.format(trackingObj.getTargetEndTime().getTime()));
-//
-//        values.put("curLocation", trackingObj.getCurLocation());
-//        values.put("meetLocation", trackingObj.getMeetLocation());
-//        db.insertWithOnConflict("tracking", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-//
-//        values.clear();
-//    }
 
-    public void loadTrackingDB(SQLiteDatabase db){
 
-        // only be called in tracking activity
 
-        Cursor cursor = db.query(
-                "tracking",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        if(cursor.moveToFirst()){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
-
-            do{
-                SimpleTracking trackingObj = new SimpleTracking();
-                String trackingid = cursor.getString(cursor.getColumnIndex("trackingID"));
-                int trackable_id = cursor.getInt(cursor.getColumnIndex("trackable_id"));
-                String title = cursor.getString(cursor.getColumnIndex("title"));
-                String curLocation = cursor.getString(cursor.getColumnIndex("curLocation"));
-                String meetLocation = cursor.getString(cursor.getColumnIndex("meetLocation"));
-                Date meetTime, targetStartTime, targetEndTime;
-
-                try {
-                    meetTime = dateFormat.parse(
-                                    cursor.getString(cursor.getColumnIndex("meetTime")));
-
-                    targetStartTime = dateFormat.parse(
-                                    cursor.getString(cursor.getColumnIndex("targetStartTime")));
-
-                    targetEndTime = dateFormat.parse(
-                                    cursor.getString(cursor.getColumnIndex("targetEndTime")));
-
-                    trackingObj.setTilte(title);
-                    trackingObj.setTrackableID(trackable_id);
-                    trackingObj.setMeetTime(meetTime);
-                    trackingObj.setTargetStartTime(targetStartTime);
-                    trackingObj.setTargetEndTime(targetEndTime);
-
-                    trackingObj.setMeetLocation(meetLocation);
-                    trackingObj.setTrackingID(trackingid);
-                    trackingObj.setCurLocation(curLocation);
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                TrackingHolder.getINSTANCE().addTracking(trackingObj);
-
-            }while (cursor.moveToNext());
-        }
-
-        db.delete("tracking", null, null);
-    }
 }
