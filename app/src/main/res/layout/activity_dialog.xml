@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:text="Suggestion"
+        android:textSize="16dp" >
+    </TextView>
+
+    <TextView
+        android:id="@id/suggestion_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:textSize="16dp" >
+    </TextView>
+
+    <LinearLayout  android:layout_width="fill_parent"
+        android:padding="8dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="5dp">
+
+
+        <Button
+            android:id="@id/suggestion_skip_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:text="Skip"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="bold" >
+        </Button>
+
+        <Button
+            android:id="@+id/suggestion_accept_btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Accept"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="bold" >
+        </Button>
+
+        <Button
+            android:id="@+id/suggestion_cancel_btn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Cancel"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            >
+        </Button>
+    </LinearLayout>
+</LinearLayout>

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vincent.assignment1.R;
+import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 import vincent.assignment1.view.AddingActivity;
 import vincent.assignment1.model.SimpleTrackable;
 
@@ -39,6 +40,9 @@ public class TrackableAdapter extends RecyclerView.Adapter<TrackableAdapter.View
             }
         }
         mSimpleTrackableList = temp;
+
+        SuggestionControl.getInstance().updateAvailableList(mOriginalList);
+
         notifyDataSetChanged();
 
     }
@@ -68,6 +72,7 @@ public class TrackableAdapter extends RecyclerView.Adapter<TrackableAdapter.View
     public TrackableAdapter (List<SimpleTrackable> simpleTrackable_list){
         this.mSimpleTrackableList = simpleTrackable_list;
         this.mOriginalList = simpleTrackable_list;
+
     }
 
     @NonNull

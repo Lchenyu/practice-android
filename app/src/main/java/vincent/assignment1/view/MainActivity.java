@@ -1,25 +1,29 @@
 package vincent.assignment1.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import vincent.assignment1.R;
-import vincent.assignment1.controller.TrackableReader;
 import vincent.assignment1.adapter.TrackableAdapter;
+import vincent.assignment1.controller.NetWork.NetWorkChangeReceiver;
+import vincent.assignment1.controller.TrackableReader;
 import vincent.assignment1.controller.evetsListener.CategorySpinnerOnItemSelectedListener;
 import vincent.assignment1.controller.evetsListener.SuggestionOnClickListener;
+import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 import vincent.assignment1.database.InsertTrackableTask;
 import vincent.assignment1.database.LoadTrackingsTask;
 import vincent.assignment1.googleMaps.MyPermissionChecker;
@@ -37,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private Button suggestionBtn;
     private MyPermissionChecker permissionChecker;
 
-    private boolean mLocationPermission = false;
+    private IntentFilter intentFilter;
+    private NetWorkChangeReceiver netWorkChangeReceiver;
+
 
 
     @Override
@@ -89,15 +95,35 @@ public class MainActivity extends AppCompatActivity {
         permissionChecker.getLocationPermission();
         permissionChecker.getLocation(this);
 
+
         suggestionBtn.setOnClickListener(new SuggestionOnClickListener(adapter, this));
 
+
+        Log.d("autosuggestion", "" +(SuggestionControl.getInstance() == null));
+
+        SuggestionControl.getInstance().setAvailableList(this, adapter.getFilteredTrackableList());
+
+        initializeReceiver();
+    }
+
+
+    private void initializeReceiver(){
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        netWorkChangeReceiver = new NetWorkChangeReceiver();
+        registerReceiver(netWorkChangeReceiver, intentFilter);
     }
 
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(netWorkChangeReceiver);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-
         LoadTrackingsTask loadTrackingsTask = new LoadTrackingsTask(this);
         loadTrackingsTask.execute();
     }
@@ -111,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
         insertTrackableTask.execute();
     }
 
+
+
+    public Button getSuggestionBtn(){
+        return this.suggestionBtn;
+    }
 
 
     @Override

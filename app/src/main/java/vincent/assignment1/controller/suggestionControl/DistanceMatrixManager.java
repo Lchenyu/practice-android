@@ -2,11 +2,9 @@ package vincent.assignment1.controller.suggestionControl;
 
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.util.Log;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -55,11 +53,11 @@ public class DistanceMatrixManager {
                     + "&key=" + activity.getResources().getString(R.string.google_map_api_key);
 
             HttpClient httpClient = new DefaultHttpClient();
+            Log.d("autosuggestion", "Http request run");
 
             HttpGet getRequest = new HttpGet(disMatrixURL);
 
             String responseBody = null;
-            HttpEntity entity;
             try{
 
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -76,9 +74,6 @@ public class DistanceMatrixManager {
                     responseBody = responseHandler.handleResponse(response);
 
                 }
-
-
-
 
             } catch (ClientProtocolException e) {
                 e.printStackTrace();

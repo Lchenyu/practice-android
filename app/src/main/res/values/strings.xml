@@ -71,7 +71,11 @@
     <string name="sorted_hint">All Items Are Sorted By Date/Time</string>
     <string name="title_activity_maps">Map</string>
 
-    <!--suggestion-->
-    <item name="suggestion_recycler_view" type="id"/>
+
+    <!--dialog-->
+    <item name="suggestion_text" type="id"/>
+    <item name="suggestion_accept_btn" type="id"/>
+    <item name="suggestion_cancel_btn" type="id"/>
+    <item name="suggestion_skip_btn" type="id"/>
 
 </resources>

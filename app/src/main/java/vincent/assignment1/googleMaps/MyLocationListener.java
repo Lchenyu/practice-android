@@ -27,7 +27,7 @@ public class MyLocationListener implements LocationListener{
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
 
-        SuggestionControl.initializeInsance(location.getLatitude()+"," + location.getLongitude());
+        SuggestionControl.getInstance().setLocation(activity, location.getLatitude()+"," + location.getLongitude());
 
     }
 
