@@ -56,7 +56,6 @@ public class AddNotifyActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     public void startAlarm(SimpleTracking tracking) {
@@ -95,7 +94,6 @@ public class AddNotifyActivity extends AppCompatActivity {
                 return object;
             }
         }
-
         return null;
     }
 

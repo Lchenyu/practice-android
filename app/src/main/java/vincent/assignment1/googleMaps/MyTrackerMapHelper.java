@@ -41,7 +41,7 @@ public class MyTrackerMapHelper {
 
         if(routeList != null && routeList.size() > 0){
             for(SimpleRoute routeObj : routeList){
-                int timeDiff = getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate()));
+                int timeDiff = Math.abs(getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate())));
 
                 timeDiffList.add(timeDiff);
                 Log.d("Maptest", currentTime.getTime() + "    " + routeObj.getDate().getTime() + "  " + timeDiff);
@@ -82,10 +82,27 @@ public class MyTrackerMapHelper {
     }
 
     private int getDiff(int date1, int date2){
-        return Math.abs(date1 - date2);
+        return (date1 - date2);
     }
 
     public void setRouteList(List<SimpleRoute> routeList){
         this.routeList = routeList;
+    }
+
+
+    public List<LatLng> getRouteLocationList(){
+        Date currentTime = Calendar.getInstance().getTime();
+
+        List<LatLng> routeLocationList = new ArrayList<>();
+
+        if(routeList != null && routeList.size() > 0){
+
+            for(SimpleRoute routeObj : routeList){
+                routeLocationList.add( new LatLng(routeObj.getLatitude(), routeObj.getLongitude()));
+            }
+            return routeLocationList;
+        }
+        routeLocationList.add(new LatLng(-37.807425,144.963814));
+        return routeLocationList;
     }
 }

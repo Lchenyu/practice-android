@@ -13,8 +13,9 @@
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
         android:text="Suggestion"
-        android:textSize="16dp" >
-    </TextView>
+        android:textColor="#183668"
+        android:textSize="18sp"/>
+
 
     <TextView
         android:id="@id/suggestion_text"
@@ -23,7 +24,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:textSize="16dp" >
+        android:textColor="#183668"
+        android:textSize="18sp" >
     </TextView>
 
     <LinearLayout  android:layout_width="fill_parent"

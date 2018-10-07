@@ -16,6 +16,8 @@ import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTrackable;
 import vincent.assignment1.service.TrackingService;
 
+import static vincent.assignment1.view.MainActivity.SEARCH_DATE;
+
 
 public class SuggestionTrackableManager {
 
@@ -36,7 +38,7 @@ public class SuggestionTrackableManager {
 
 
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-            String searchdate = "06/10/2018 1:05:00 PM";
+            String searchdate = SEARCH_DATE;
             //Date date = dateFormat.parse(curDateFormat.format(currentTime));
             Date date = dateFormat.parse(searchdate);
             List<TrackingService.TrackingInfo> matched = TrackingService.getSingletonInstance(activity)

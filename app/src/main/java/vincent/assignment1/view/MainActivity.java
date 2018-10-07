@@ -32,7 +32,8 @@ import vincent.assignment1.controller.suggestionControl.NetWorkChangeReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "ReadFile";
+    public final static String SEARCH_DATE = "07/10/2018 1:05:00 PM";
+
     private List<SimpleTrackable> simpleTrackableList = new ArrayList<>();
     private List<String> categoryList = new ArrayList<>();
     private Toolbar myToolBar;

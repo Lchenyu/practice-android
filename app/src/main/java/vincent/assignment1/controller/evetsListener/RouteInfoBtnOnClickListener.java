@@ -19,6 +19,8 @@ import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.service.TrackingService;
 import vincent.assignment1.view.MapsActivity;
 
+import static vincent.assignment1.view.MainActivity.SEARCH_DATE;
+
 /**
  * @author Yu Liu
  *
@@ -50,7 +52,7 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
             SimpleDateFormat curDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
 
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-            String searchdate = "06/10/2018 1:05:00 PM";
+            String searchdate = SEARCH_DATE;
             //Date date = dateFormat.parse(curDateFormat.format(currentTime));
             Date date = dateFormat.parse(searchdate);
 
@@ -94,9 +96,6 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
                 routeObj.setLongitude(routeInfo.longitude);
                 routeList.add(routeObj);
                 tempMatch.add(routeInfo);
-
-//                Log.d("Maptest", routeInfo.date.toString());
-
             }
         }
 
