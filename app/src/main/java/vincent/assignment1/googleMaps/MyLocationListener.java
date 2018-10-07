@@ -9,23 +9,20 @@ import android.util.Log;
 
 import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 
 public class MyLocationListener implements LocationListener{
 
     private Activity activity;
-    private double latitude;
-    private double longitude;
 
     public MyLocationListener(Activity activity) {
         this.activity = activity;
-        Log.d("GPStest", "new location listener");
+        Log.d(TAG_STAGE + getClass().getName(), "new location listener");
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
-        this.latitude = location.getLatitude();
-        this.longitude = location.getLongitude();
 
         SuggestionControl.getInstance().setLocation(activity, location.getLatitude()+"," + location.getLongitude());
 

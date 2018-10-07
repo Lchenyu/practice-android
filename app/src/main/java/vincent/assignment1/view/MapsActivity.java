@@ -19,6 +19,8 @@ import java.util.List;
 import vincent.assignment1.R;
 import vincent.assignment1.googleMaps.MyTrackerMapHelper;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -54,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        LatLng curLocation = MyTrackerMapHelper.getINSTANCE().getCurLocation();
 //        mMap.addMarker(new MarkerOptions().position(curLocation).title("I am trackable"));
 
-        Log.d("finaltest : map activity: ", "routelocation list size : " + routeLocationList.size());
+        Log.d(TAG_STAGE + getClass().getName(), "routelocation list size : " + routeLocationList.size());
 
         for (LatLng location : routeLocationList) {
             mMap.addMarker(new MarkerOptions().position(location).title("I am trackable"));

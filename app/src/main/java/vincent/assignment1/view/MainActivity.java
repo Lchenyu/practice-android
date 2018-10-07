@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     public final static String SEARCH_DATE = "07/10/2018 1:05:00 PM";
 
+    public final static String TAG_STAGE = "FINAL STAGE: ";
+
     private List<SimpleTrackable> simpleTrackableList = new ArrayList<>();
     private List<String> categoryList = new ArrayList<>();
     private Toolbar myToolBar;
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         suggestionBtn.setOnClickListener(new SuggestionOnClickListener(adapter, this));
 
 
-        Log.d("autosuggestion", "" +(SuggestionControl.getInstance() == null));
+        Log.d(TAG_STAGE + getClass().getName(), "boolean of SuggestionControl instance" +(SuggestionControl.getInstance() == null));
 
         SuggestionControl.getInstance().setAvailableList(this, adapter.getFilteredTrackableList());
 
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //initialize network change receiver
     private void initializeReceiver(){
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("finaltest", "onStart");
+        Log.d(TAG_STAGE + getClass().getName(), "onStart");
         TrackingHolder.getINSTANCE().getTrackingList().clear();
         LoadTrackingsTask loadTrackingsTask = new LoadTrackingsTask(this);
         loadTrackingsTask.execute();
@@ -140,13 +143,6 @@ public class MainActivity extends AppCompatActivity {
         InsertTrackableTask insertTrackableTask = new InsertTrackableTask(trackableReader.getTrackableList(), this);
         insertTrackableTask.execute();
     }
-
-
-
-    public Button getSuggestionBtn(){
-        return this.suggestionBtn;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

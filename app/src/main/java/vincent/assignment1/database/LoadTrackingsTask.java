@@ -13,6 +13,8 @@ import java.util.Date;
 import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.model.SimpleTracking;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class LoadTrackingsTask extends AsyncTask<Void, Void, Void> {
 
     private Context activity;
@@ -25,7 +27,7 @@ public class LoadTrackingsTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        Log.d("finaltest", "Loading tracking from database");
+        Log.d(TAG_STAGE + getClass().getName(), "Loading tracking from database");
 
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();

@@ -13,13 +13,19 @@ import java.util.List;
 import vincent.assignment1.model.SimpleTrackable;
 import vincent.assignment1.view.AddingActivity;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
+/**
+ * @author Yu Liu
+ *
+ * practice purpose to create a dialog box, there is another way which is using intent service to trigger a suggestion dialog activity
+ */
+
 public class SuggestionDialog {
 
     private Context activity;
     private View view;
     private List<SimpleTrackable> suggestedList;
-
-    private int action;
 
     public SuggestionDialog ( Activity activity,  View view,  List<SimpleTrackable> suggestedList){
         this.activity = activity;
@@ -43,7 +49,7 @@ public class SuggestionDialog {
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        Log.d("suggestion", "accept button");
+                        Log.d(TAG_STAGE + getClass().getName(), "accept button");
 
                         Intent intent = new Intent(activity, AddingActivity.class);
                         intent.putExtra("trackable_ID", String.valueOf(suggestedList.get(0).getId()));
@@ -57,7 +63,7 @@ public class SuggestionDialog {
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        Log.d("suggestion", "skip button");
+                        Log.d(TAG_STAGE + getClass().getName(), "skip button");
                         if(suggestedList.size() > 0){
                             suggestedList.remove(0);
                         }
@@ -67,8 +73,6 @@ public class SuggestionDialog {
                         } else {
                             dialog.cancel();
                         }
-
-                        //dialog.cancel();
                     }
                 });
 
@@ -77,7 +81,7 @@ public class SuggestionDialog {
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        Log.d("suggestion", "cancel button");
+                        Log.d(TAG_STAGE + getClass().getName(), "cancel button");
                         dialog.cancel();
                     }
                 });

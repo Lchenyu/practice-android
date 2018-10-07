@@ -13,19 +13,21 @@ import android.util.Log;
 
 import vincent.assignment1.R;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class NotificationIntentService extends IntentService {
 
 
     public NotificationIntentService() {
 
         super("NotificationIntentService");
-        Log.d("finaltest : notify :", "notification intent service constructor");
+        Log.d(TAG_STAGE + getClass().getName(), "on constructor");
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        Log.d("finaltest : notify :", "notification intent service onHandleIntent");
+        Log.d(TAG_STAGE + getClass().getName(), "on onHandleIntent");
 
         createNotificationChannel();
         String title = intent.getStringExtra("title");
@@ -36,7 +38,7 @@ public class NotificationIntentService extends IntentService {
 
     private void createNotification(String text){
 
-        Log.d("finaltest", "create notification");
+        Log.d(TAG_STAGE + getClass().getName(), "create notification");
 
         Intent intent = new Intent(this, RepeatNoticeIntentService.class);
         intent.putExtra("title", text);

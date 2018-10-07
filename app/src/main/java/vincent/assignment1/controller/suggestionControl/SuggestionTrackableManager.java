@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import vincent.assignment1.controller.MyTimeHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTrackable;
 import vincent.assignment1.service.TrackingService;
 
 import static vincent.assignment1.view.MainActivity.SEARCH_DATE;
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
 
 
 public class SuggestionTrackableManager {
@@ -38,14 +40,15 @@ public class SuggestionTrackableManager {
 
 
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
+            //current time will not work well with tracking service, so I have to hard code date as TestTrackingService
             String searchdate = SEARCH_DATE;
             //Date date = dateFormat.parse(curDateFormat.format(currentTime));
             Date date = dateFormat.parse(searchdate);
             List<TrackingService.TrackingInfo> matched = TrackingService.getSingletonInstance(activity)
                     .getTrackingInfoForTimeRange(date, 600, 0);
 
-            Log.d("finalTest", "date in suggestiontracking manager : " + date);
-            Log.d("finalTest", "raw matched size in suggestiontracking manager : "+ matched.size());
+            Log.d(TAG_STAGE + getClass().getName(), "date" + date);
+            Log.d(TAG_STAGE + getClass().getName(), "raw matched size"+ matched.size());
 
             return getCurMatchList(matched);
         }
@@ -62,12 +65,10 @@ public class SuggestionTrackableManager {
         List<SimpleRoute> curMatchList = new ArrayList<>();
         Date currentTime = Calendar.getInstance().getTime();
 
-
         for(SimpleTrackable trackable : mAvailableList){
 
             List<SimpleRoute> routeList = new ArrayList<>();
             ArrayList<Integer> timeDiffList = new ArrayList<>();
-
 
             //find trackable based on stop time
             for(TrackingService.TrackingInfo routeInfo : matched){
@@ -80,19 +81,20 @@ public class SuggestionTrackableManager {
                     routeObj.setStopTime(routeInfo.stopTime);
 
                     routeList.add(routeObj);
-//                    curMatchList.add(routeObj);
                 }
             }
 
             //find stationary time close to current time
             if(routeList.size() != 0){
                 for(SimpleRoute routeObj : routeList){
-                    int timeDiff = getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate()));
+                    int timeDiff = MyTimeHelper.getTimeDiff(MyTimeHelper.getMeasurableTime(currentTime), MyTimeHelper.getMeasurableTime(routeObj.getDate()));
 
-                    timeDiffList.add(timeDiff);
+                    timeDiffList.add(Math.abs(timeDiff));
                 }
 
-                int index = 0;
+                int index = 0; //index for finding a correct object in another same sequence list
+
+                //find an route which is the closest on current time
                 for(int i = 1; i < timeDiffList.size(); i++){
                     if(timeDiffList.get(index) > timeDiffList.get(i)){
                         index = i;
@@ -100,30 +102,28 @@ public class SuggestionTrackableManager {
                 }
                 curMatchList.add(routeList.get(index));
             }
-
         }
-
         return curMatchList;
     }
 
 
-    private int getMeasurableTime(Date date){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-
-        String strDate = dateFormat.format(date);
-
-        Log.d("maptest", " time: "+ strDate);
-        String[] splitedDate = strDate.split(":");
-        int hh = Integer.valueOf(splitedDate[0]);
-        int mm = Integer.valueOf(splitedDate[1]);
-        int ss = Integer.valueOf(splitedDate[2]);
-
-        return hh* 60 * 60 + mm * 60 + ss;
-    }
-
-    private int getDiff(int date1, int date2){
-        return Math.abs(date1 - date2);
-    }
+//    private int getMeasurableTime(Date date){
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+//
+//        String strDate = dateFormat.format(date);
+//
+//        Log.d("maptest", " time: "+ strDate);
+//        String[] splitedDate = strDate.split(":");
+//        int hh = Integer.valueOf(splitedDate[0]);
+//        int mm = Integer.valueOf(splitedDate[1]);
+//        int ss = Integer.valueOf(splitedDate[2]);
+//
+//        return hh* 60 * 60 + mm * 60 + ss;
+//    }
+//
+//    private int getDiff(int date1, int date2){
+//        return Math.abs(date1 - date2);
+//    }
 
 
 

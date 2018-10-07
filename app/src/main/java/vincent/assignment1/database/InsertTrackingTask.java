@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 
 import vincent.assignment1.model.SimpleTracking;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class InsertTrackingTask extends AsyncTask<Void, Void, Void> {
 
     private Activity activity;
@@ -23,7 +25,7 @@ public class InsertTrackingTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        Log.d("finaltest", "write tracking into database");
+        Log.d(TAG_STAGE + getClass().getName(), "write tracking");
 
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();
@@ -40,8 +42,6 @@ public class InsertTrackingTask extends AsyncTask<Void, Void, Void> {
 
         values.put("curLocation", trackingObj.getCurLocation());
         values.put("meetLocation", trackingObj.getMeetLocation());
-
-
 
         db.insertWithOnConflict(MyDatabaseHelper.TRACKING_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 

@@ -1,16 +1,15 @@
 package vincent.assignment1.service;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
+import vincent.assignment1.controller.suggestionControl.MyNetWorkHelper;
 import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 import vincent.assignment1.view.DialogActivity;
+
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
 
 public class SuggestionIntentService extends IntentService {
 
@@ -22,13 +21,13 @@ public class SuggestionIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        Log.d("autosuggestion", "Suggestion Intent Service Run");
+        Log.d(TAG_STAGE + getClass().getName(), "Suggestion Intent Service Run");
 
-        while (isNetworkAvailable(this)){
+        while (MyNetWorkHelper.isNetworkAvailable(this)){
 
             SuggestionControl.getInstance().setSuggestedList();
 
-
+            //sleep awhile waiting for http request (distance matrix)
             try {
                 Thread.sleep( 5000);
             } catch (InterruptedException e) {
@@ -39,32 +38,15 @@ public class SuggestionIntentService extends IntentService {
             showSuggest.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(showSuggest);
 
+            //sleep awhile then trigger next suggestion
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
 
-    }
-    private boolean isNetworkAvailable(Context context) {
-        //Use ConnectivityManager class to access connectivity nfo
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        //checks if internet is available
-        boolean isAvailable = false;
-
-        //check if network exists and network is connected
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        } else {
-            Toast.makeText(context,"Network is unavailable", Toast.LENGTH_LONG).show();
-        }
-
-        return isAvailable;
     }
 
 }

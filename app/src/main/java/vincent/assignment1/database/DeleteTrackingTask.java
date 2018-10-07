@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class DeleteTrackingTask extends AsyncTask<Void, Void, Void> {
 
     private Activity activity;
@@ -19,7 +21,7 @@ public class DeleteTrackingTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        Log.d("finaltest", "delete tracking in DeleteTrackingTask : key: " + key);
+        Log.d(TAG_STAGE + getClass().getName(), "delete tracking key is: " + key);
 
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();

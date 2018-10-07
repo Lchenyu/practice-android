@@ -1,8 +1,14 @@
 package vincent.assignment1.database;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+/**
+ * @author Yu Liu
+ *
+ * this singleten class is going to make sure there is only one database connection exist
+ * when there may be a lot database thread to access connection.
+ */
 
 public class MyDatabaseManager {
 
@@ -21,7 +27,6 @@ public class MyDatabaseManager {
             INSTANCE = new MyDatabaseManager();
             myDatabaseHelper = new MyDatabaseHelper(context);
         }
-
         return INSTANCE;
     }
 
@@ -40,7 +45,6 @@ public class MyDatabaseManager {
         if(mOpenCounter == 0) {
             // Closing database
             mDatabase.close();
-
         }
     }
 

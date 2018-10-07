@@ -19,6 +19,8 @@ import vincent.assignment1.R;
 import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.model.SimpleTracking;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 public class AddNotifyActivity extends AppCompatActivity {
 
     private TextView titleView;
@@ -50,7 +52,7 @@ public class AddNotifyActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Log.d("finaltest", "button clicked in addNotifyActivity ");
+                    Log.d(TAG_STAGE + getClass().getName(), "set notification button clicked");
                     startAlarm(trackingObject);
                     finish();
                 }
@@ -68,6 +70,7 @@ public class AddNotifyActivity extends AppCompatActivity {
         //will be taken from user input
         long oneMinuteInMilli = 2 * 60000;
 
+
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, getNotifyDate(tracking.getMeetTime()), pendingIntent);
 
     }
@@ -75,7 +78,7 @@ public class AddNotifyActivity extends AppCompatActivity {
     private Long getNotifyDate(Date meetTime){
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 06);
+        cal.set(Calendar.DAY_OF_MONTH, 07);
         cal.set(Calendar.MONTH, 9);
         cal.set(Calendar.YEAR, 2018);
         cal.set(Calendar.HOUR_OF_DAY, meetTime.getHours());
@@ -83,7 +86,7 @@ public class AddNotifyActivity extends AppCompatActivity {
 
         cal.add(Calendar.MINUTE, -1);
 
-        Log.d("finaltest", "notify time in addNotifyActivity : " + cal.getTime());
+        Log.d(TAG_STAGE + getClass().getName(), "notify time: " + cal.getTime());
 
         return cal.getTimeInMillis();
     }

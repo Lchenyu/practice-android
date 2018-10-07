@@ -25,6 +25,8 @@ import vincent.assignment1.controller.TrackableReader;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTrackable;
 
+import static vincent.assignment1.view.MainActivity.TAG_STAGE;
+
 
 public class DistanceMatrixManager {
 
@@ -40,7 +42,7 @@ public class DistanceMatrixManager {
         this.prioritizedRouteList = new ArrayList<>();
         this.routeList = routeList;
 
-        Log.d("finalTest", "routelist in DM manager : " + routeList.size());
+        Log.d(TAG_STAGE + getClass().getName(), "routelist size " + routeList.size());
     }
 
 
@@ -48,57 +50,61 @@ public class DistanceMatrixManager {
 
         List<Integer> valueList = new ArrayList<>();
 
-        for(SimpleRoute routeObject : routeList){
-            disMatrixURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + curLocation
-                    + "&destinations="+ routeObject.getLatitude() + "," + routeObject.getLongitude()
-                    + "&key=" + activity.getResources().getString(R.string.google_map_api_key);
+        if(MyNetWorkHelper.isNetworkAvailable(activity)){
+            //do the http request on the main thread, but it should put into another thread.
+            for(SimpleRoute routeObject : routeList){
 
-            HttpClient httpClient = new DefaultHttpClient();
-            Log.d("autosuggestion", "Http request run");
+                disMatrixURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + curLocation
+                        + "&destinations="+ routeObject.getLatitude() + "," + routeObject.getLongitude()
+                        + "&key=" + activity.getResources().getString(R.string.google_map_api_key);
 
-            HttpGet getRequest = new HttpGet(disMatrixURL);
+                HttpClient httpClient = new DefaultHttpClient();
 
-            String responseBody = null;
-            try{
+                Log.d(TAG_STAGE + getClass().getName(), "Http request run");
 
-                int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                if (SDK_INT > 8)
-                {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                            .permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    //your codes here
+                HttpGet getRequest = new HttpGet(disMatrixURL);
 
-                    HttpResponse response = httpClient.execute(getRequest);
+                String responseBody = null;
+                try{
+                    int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                    if (SDK_INT > 8)
+                    {
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                .permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        //your codes here
 
-                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                    responseBody = responseHandler.handleResponse(response);
+                        HttpResponse response = httpClient.execute(getRequest);
 
+                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                        responseBody = responseHandler.handleResponse(response);
+                    }
+
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                //parse JSON response
+                try {
+                    JSONObject result = new JSONObject(responseBody);
+                    JSONArray rows = result.getJSONArray("rows");
+                    JSONObject row1 = rows.getJSONObject(0);
+                    JSONArray elements = row1.getJSONArray("elements");
+                    JSONObject ele1 = elements.getJSONObject(0);
 
-            try {
-                JSONObject result = new JSONObject(responseBody);
-                JSONArray rows = result.getJSONArray("rows");
-                JSONObject row1 = rows.getJSONObject(0);
-                JSONArray elements = row1.getJSONArray("elements");
-                JSONObject ele1 = elements.getJSONObject(0);
+                    Log.d("jsontest", ele1.toString());
 
-                Log.d("jsontest", ele1.toString());
+                    JSONObject distance = ele1.getJSONObject("distance");
+                    JSONObject duration = ele1.getJSONObject("duration");
 
-                JSONObject distance = ele1.getJSONObject("distance");
-                JSONObject duration = ele1.getJSONObject("duration");
-
-                int dis = distance.getInt("value");
-                int dur = duration.getInt("value");
-                valueList.add(dur);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    int dis = distance.getInt("value");
+                    int dur = duration.getInt("value");
+                    valueList.add(dur);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return valueList;
@@ -107,16 +113,12 @@ public class DistanceMatrixManager {
 
     public List<SimpleTrackable> getFinalSuggestionList(List<Integer> valueList) {
 
-
-
-
-        //sort by duration and only store the route object which has stoptime greater than its duration
+        //sort by duration and only store the route object which has stop time greater than its duration
         while (valueList.size() != 0){
+            int index = 0; //index for finding a correct object in another same sequence list
 
-            int index = 0;
-
+            //find the closest object based on duration (the minimum value of duration)
             for(int i = 1; i < valueList.size(); i++){
-
                 if(valueList.get(index) > valueList.get(i)){
                     index = i;
                 }
@@ -124,7 +126,7 @@ public class DistanceMatrixManager {
 
             prioritizedRouteList.add(routeList.get(index));
 
-
+            //remove the object from list, in order to find the next closet object.
             routeList.remove(index);
             valueList.remove(index);
         }
@@ -132,6 +134,8 @@ public class DistanceMatrixManager {
         List<SimpleTrackable> suggestionTackableList = new ArrayList<>();
         List<SimpleTrackable> trackableList = TrackableReader.getINSTANCE(activity).getTrackableList();
 
+
+        //find trackable object based on ID
         for(SimpleRoute routeObject : prioritizedRouteList){
             for(SimpleTrackable trackableObject : trackableList){
                 if(routeObject.getTrackableId() == trackableObject.getId()){

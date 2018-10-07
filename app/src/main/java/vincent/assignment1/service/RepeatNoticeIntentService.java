@@ -18,11 +18,11 @@ public class RepeatNoticeIntentService extends IntentService {
 
         AlarmManager alarmManager  = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        Intent mintent = new Intent(this, NotificationIntentService.class);
+        Intent mIntent = new Intent(this, NotificationIntentService.class);
 
-        mintent.putExtra("title", intent.getStringExtra("title"));
+        mIntent.putExtra("title", intent.getStringExtra("title"));
 
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, mIntent, 0);
 
 
         long oneMinuteInMilli = 60000;

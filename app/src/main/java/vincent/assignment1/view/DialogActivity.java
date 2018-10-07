@@ -64,7 +64,6 @@ public class DialogActivity extends Activity {
                     intent.putExtra("trackable_ID", String.valueOf(suggestedList.get(0).getId()));
                     v.getContext().startActivity(intent);
                 }
-
                 finish();
             }
         });
@@ -77,10 +76,8 @@ public class DialogActivity extends Activity {
                 }
                 finish();
                 if(suggestedList.size() > 0) {
-
                     startActivity(getIntent());
                 }
-
             }
         });
 
