@@ -73,9 +73,20 @@
 
 
     <!--dialog-->
-    <item name="suggestion_text" type="id"/>
-    <item name="suggestion_accept_btn" type="id"/>
-    <item name="suggestion_cancel_btn" type="id"/>
-    <item name="suggestion_skip_btn" type="id"/>
+    <item name="suggestion_text" type="id" />
+    <item name="suggestion_accept_btn" type="id" />
+    <item name="suggestion_cancel_btn" type="id" />
+    <item name="suggestion_skip_btn" type="id" />
+
+
+    <!--notification layout-->
+    <item name="notify_tracking_title" type="id"/>
+    <item name="notify_tracking_meet_time" type="id"/>
+    <item name="notify_time_before" type="id"/>
+    <item name="notify_set_notify_btn" type="id"/>
+    <string name="notify_btn_name">set notification</string>
+    <string name="notify_meet_name">Meet AT : </string>
+
+
 
 </resources>

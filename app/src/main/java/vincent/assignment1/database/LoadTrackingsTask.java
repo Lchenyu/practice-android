@@ -1,9 +1,10 @@
 package vincent.assignment1.database;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,15 +15,17 @@ import vincent.assignment1.model.SimpleTracking;
 
 public class LoadTrackingsTask extends AsyncTask<Void, Void, Void> {
 
-    private Activity activity;
+    private Context activity;
 
-    public LoadTrackingsTask(Activity activity){
+    public LoadTrackingsTask(Context activity){
         this.activity = activity;
     }
 
 
     @Override
     protected Void doInBackground(Void... voids) {
+
+        Log.d("finaltest", "Loading tracking from database");
 
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();
@@ -36,7 +39,7 @@ public class LoadTrackingsTask extends AsyncTask<Void, Void, Void> {
                 null,
                 null);
 
-        if(cursor.moveToFirst()){
+        if(cursor.getCount() > 0 && cursor.moveToFirst()){
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
 
             do{

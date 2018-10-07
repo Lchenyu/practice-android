@@ -34,13 +34,16 @@ public class SuggestionTrackableManager {
             Date currentTime = Calendar.getInstance().getTime();
             SimpleDateFormat curDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
 
+
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-            Date date = dateFormat.parse(curDateFormat.format(currentTime));
-
+            String searchdate = "06/10/2018 1:05:00 PM";
+            //Date date = dateFormat.parse(curDateFormat.format(currentTime));
+            Date date = dateFormat.parse(searchdate);
             List<TrackingService.TrackingInfo> matched = TrackingService.getSingletonInstance(activity)
-                    .getTrackingInfoForTimeRange(date, 60, 0);
+                    .getTrackingInfoForTimeRange(date, 600, 0);
 
-            Log.d("suggestionTest", "raw matched size"+ matched.size());
+            Log.d("finalTest", "date in suggestiontracking manager : " + date);
+            Log.d("finalTest", "raw matched size in suggestiontracking manager : "+ matched.size());
 
             return getCurMatchList(matched);
         }

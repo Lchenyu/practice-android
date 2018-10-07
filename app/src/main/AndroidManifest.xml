@@ -13,6 +13,7 @@
         android:required="true" />
 
     <application
+        android:name=".Notification.AppNotification"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -45,12 +46,17 @@
             android:name=".view.MapsActivity"
             android:label="@string/title_activity_maps" />
 
-        <service android:name=".controller.suggestionControl.SuggestionIntentService" />
+        <service android:name=".service.SuggestionIntentService" />
 
-        <activity android:name=".view.DialogActivity"
+        <activity
+            android:name=".view.DialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".view.AddNotifyActivity"></activity>
 
-            android:theme="@android:style/Theme.Dialog"
-            android:launchMode="singleInstance"/>
+        <receiver android:name=".Notification.AlertReceiver"></receiver>
+        <receiver android:name=".Notification.ResecheduleReceiver"></receiver>
+
     </application>
 
 </manifest>

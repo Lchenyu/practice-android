@@ -103,7 +103,7 @@ public class TrackingService
                next=next.substring(0, commentPos);
             trackingInfo.longitude = Double.parseDouble(next);
             trackingList.add(trackingInfo);
-            Log.d("Maptest", trackingInfo.date.toString());
+            Log.d("finaltest","tracking info in TrackingService : "+ trackingInfo.date.toString());
          }
       }
       catch (Resources.NotFoundException e)
@@ -167,6 +167,9 @@ public class TrackingService
       for (TrackingInfo trackingInfo : trackingList)
          if (dateInRange(trackingInfo.date, date, periodMinutes, periodSeconds))
             returnList.add(trackingInfo);
+
+      Log.d("finaltest","tracking list in TrackingService : "+ trackingList.size());
+      Log.d("finaltest","return list in TrackingService : "+ returnList.size());
       return returnList;
    }
 }

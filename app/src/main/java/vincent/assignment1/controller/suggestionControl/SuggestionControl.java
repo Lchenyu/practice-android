@@ -40,7 +40,6 @@ public class SuggestionControl {
 
     public List<SimpleTrackable> getMutableList(){
 
-
         if(mutableList == null){
             Log.d("autosuggestion","get mutable list");
             this.mutableList = this.suggestedList;
@@ -58,20 +57,14 @@ public class SuggestionControl {
             this.activity = activity;
         }
         this.availableList = availableList;
-
-//        setSuggestedList();
     }
 
     public void updateAvailableList ( List<SimpleTrackable> availableList) {
         this.availableList = availableList;
 
-//        setSuggestedList();
     }
 
     public void setSuggestedList (){
-//        if(this.activity == null && this.curLocation != null && this.availableList != null){
-//            this.suggestedList = getSuggestedList();
-//        }
 
         this.suggestedList = getSuggestedList();
         Log.d("autosuggestion", "SuggestedList size: " + suggestedList.size());

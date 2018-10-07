@@ -1,4 +1,4 @@
-package vincent.assignment1.controller.NetWork;
+package vincent.assignment1.controller.suggestionControl;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import vincent.assignment1.controller.suggestionControl.SuggestionIntentService;
+import vincent.assignment1.service.SuggestionIntentService;
 
 
 public class NetWorkChangeReceiver extends BroadcastReceiver {

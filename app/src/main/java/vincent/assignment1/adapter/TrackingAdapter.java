@@ -1,5 +1,6 @@
 package vincent.assignment1.adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import vincent.assignment1.R;
 import vincent.assignment1.model.SimpleTracking;
+import vincent.assignment1.view.AddNotifyActivity;
 
 public class TrackingAdapter extends RecyclerView.Adapter<TrackingAdapter.ViewHolder> {
 
@@ -41,7 +43,7 @@ public class TrackingAdapter extends RecyclerView.Adapter<TrackingAdapter.ViewHo
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_tracking_layout, parent, false);
 
-        ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
 
 
 
@@ -50,7 +52,7 @@ public class TrackingAdapter extends RecyclerView.Adapter<TrackingAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SimpleTracking trackingObj = trackingList.get(position);
+        final SimpleTracking trackingObj = trackingList.get(position);
 
         holder.trackingTitle.setText(trackingObj.getTilte());
         holder.trackableName.setText(String.valueOf(trackingObj.getTrackableID()));
@@ -58,6 +60,15 @@ public class TrackingAdapter extends RecyclerView.Adapter<TrackingAdapter.ViewHo
         SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
         Log.i("Tracking Time",dateformat.format(trackingObj.getMeetTime()));
         holder.meetTime.setText(dateformat.format(trackingObj.getMeetTime()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AddNotifyActivity.class);
+                intent.putExtra("tracking_id", trackingObj.getTrackingID());
+                v.getContext().startActivity(intent);
+            }
+        });
 
 
     }

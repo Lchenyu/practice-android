@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 
@@ -19,9 +20,10 @@ public class InsertTrackingTask extends AsyncTask<Void, Void, Void> {
         this.trackingObj = tracking;
     }
 
-
     @Override
     protected Void doInBackground(Void... voids) {
+
+        Log.d("finaltest", "write tracking into database");
 
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();
@@ -38,6 +40,8 @@ public class InsertTrackingTask extends AsyncTask<Void, Void, Void> {
 
         values.put("curLocation", trackingObj.getCurLocation());
         values.put("meetLocation", trackingObj.getMeetLocation());
+
+
 
         db.insertWithOnConflict(MyDatabaseHelper.TRACKING_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 

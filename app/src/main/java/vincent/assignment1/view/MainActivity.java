@@ -19,8 +19,8 @@ import java.util.List;
 
 import vincent.assignment1.R;
 import vincent.assignment1.adapter.TrackableAdapter;
-import vincent.assignment1.controller.NetWork.NetWorkChangeReceiver;
 import vincent.assignment1.controller.TrackableReader;
+import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.controller.evetsListener.CategorySpinnerOnItemSelectedListener;
 import vincent.assignment1.controller.evetsListener.SuggestionOnClickListener;
 import vincent.assignment1.controller.suggestionControl.SuggestionControl;
@@ -28,6 +28,7 @@ import vincent.assignment1.database.InsertTrackableTask;
 import vincent.assignment1.database.LoadTrackingsTask;
 import vincent.assignment1.googleMaps.MyPermissionChecker;
 import vincent.assignment1.model.SimpleTrackable;
+import vincent.assignment1.controller.suggestionControl.NetWorkChangeReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -124,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("finaltest", "onStart");
+        TrackingHolder.getINSTANCE().getTrackingList().clear();
         LoadTrackingsTask loadTrackingsTask = new LoadTrackingsTask(this);
         loadTrackingsTask.execute();
     }

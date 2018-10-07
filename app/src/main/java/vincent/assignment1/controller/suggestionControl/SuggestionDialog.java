@@ -58,7 +58,7 @@ public class SuggestionDialog {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         Log.d("suggestion", "skip button");
-                        if(suggestedList != null){
+                        if(suggestedList.size() > 0){
                             suggestedList.remove(0);
                         }
                         if(suggestedList.size() > 0){

@@ -39,7 +39,7 @@ public class MyTrackerMapHelper {
         int index = 0;
         ArrayList<Integer> timeDiffList = new ArrayList<>();
 
-        if(routeList != null){
+        if(routeList != null && routeList.size() > 0){
             for(SimpleRoute routeObj : routeList){
                 int timeDiff = getDiff(getMeasurableTime(currentTime), getMeasurableTime(routeObj.getDate()));
 

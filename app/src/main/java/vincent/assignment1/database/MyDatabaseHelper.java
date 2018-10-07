@@ -2,18 +2,12 @@ package vincent.assignment1.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import vincent.assignment1.controller.TrackingHolder;
-import vincent.assignment1.model.SimpleTrackable;
 import vincent.assignment1.model.SimpleTracking;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper{
@@ -31,7 +25,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             + "webSite TEXT); ";
 
     public static final String CREATE_TRACKING = "CREATE TABLE tracking ("
-            + "trackingID INTEGER PRIMARY KEY, "
+            + "trackingID TEXT PRIMARY KEY, "
             + "trackable_id INTEGER, "
             + "title TEXT, "
             + "meetTime TEXT, "
@@ -42,7 +36,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             + "FOREIGN KEY (trackable_id) REFERENCES trackable (trackableID) );" ;
 
     public MyDatabaseHelper (Context context){
-        super(context, DATABASE_NAME,  null, 2);
+        super(context, DATABASE_NAME,  null,   1);
         this.mContext = context;
     }
 

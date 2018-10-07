@@ -1,8 +1,6 @@
 package vincent.assignment1.controller.evetsListener;
 
 import android.app.Activity;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.icu.util.Calendar;
 import android.view.View;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import java.util.UUID;
 
 import vincent.assignment1.controller.TrackingHolder;
 import vincent.assignment1.database.InsertTrackingTask;
-import vincent.assignment1.database.MyDatabaseHelper;
 import vincent.assignment1.model.SimpleRoute;
 import vincent.assignment1.model.SimpleTracking;
 
@@ -55,6 +52,7 @@ public class AddSaveBtnOnClickListener implements View.OnClickListener {
 
                 String id = UUID.randomUUID().toString();
                 trackingObj.setTrackingID(id);
+
 
                 //add a tracking object into database
                 InsertTrackingTask insertTrackingTask = new InsertTrackingTask(activity, trackingObj);

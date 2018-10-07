@@ -8,12 +8,10 @@ import android.view.View;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import vincent.assignment1.adapter.RouteAdapter;
 import vincent.assignment1.googleMaps.MyTrackerMapHelper;
@@ -52,7 +50,9 @@ public class RouteInfoBtnOnClickListener implements View.OnClickListener {
             SimpleDateFormat curDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
 
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-            Date date = dateFormat.parse(curDateFormat.format(currentTime));
+            String searchdate = "06/10/2018 1:05:00 PM";
+            //Date date = dateFormat.parse(curDateFormat.format(currentTime));
+            Date date = dateFormat.parse(searchdate);
 
             Log.d("maptest", "current time on refresh" + date.toString());
 

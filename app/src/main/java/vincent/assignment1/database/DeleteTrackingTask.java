@@ -3,6 +3,7 @@ package vincent.assignment1.database;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class DeleteTrackingTask extends AsyncTask<Void, Void, Void> {
 
@@ -18,10 +19,12 @@ public class DeleteTrackingTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
+        Log.d("finaltest", "delete tracking in DeleteTrackingTask : key: " + key);
+
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();
 
-        db.delete(MyDatabaseHelper.TRACKING_TABLE, "trackingID = "+ key, null);
+        db.delete(MyDatabaseHelper.TRACKING_TABLE, "trackingID = ?", new String[]{key});
 
 
         dbManager.closeDatabase();

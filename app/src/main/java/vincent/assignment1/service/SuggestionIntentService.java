@@ -1,10 +1,11 @@
-package vincent.assignment1.controller.suggestionControl;
+package vincent.assignment1.service;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import vincent.assignment1.controller.suggestionControl.SuggestionControl;
 import vincent.assignment1.view.DialogActivity;
 
 public class SuggestionIntentService extends IntentService {
@@ -21,7 +22,6 @@ public class SuggestionIntentService extends IntentService {
 
         while (true){
 
-
             SuggestionControl.getInstance().setSuggestedList();
 
 
@@ -34,7 +34,6 @@ public class SuggestionIntentService extends IntentService {
             Intent showSuggest = new Intent(this, DialogActivity.class);
             showSuggest.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(showSuggest);
-
 
             try {
                 Thread.sleep(30000);

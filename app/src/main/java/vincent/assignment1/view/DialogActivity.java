@@ -32,8 +32,8 @@ public class DialogActivity extends Activity {
         //adjust window size of this dialog activity
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.x = -10;
-        params.height = 500;
-        params.width = 650;
+        params.height = 750;
+        params.width = 800;
         params.y = -10;
         getWindow().setAttributes(params);
 
@@ -59,9 +59,11 @@ public class DialogActivity extends Activity {
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AddingActivity.class);
-                intent.putExtra("trackable_ID", String.valueOf(suggestedList.get(0).getId()));
-                v.getContext().startActivity(intent);
+                if(suggestedList.size() > 0){
+                    Intent intent = new Intent(v.getContext(), AddingActivity.class);
+                    intent.putExtra("trackable_ID", String.valueOf(suggestedList.get(0).getId()));
+                    v.getContext().startActivity(intent);
+                }
 
                 finish();
             }

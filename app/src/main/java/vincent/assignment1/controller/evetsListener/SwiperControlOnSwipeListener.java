@@ -26,8 +26,10 @@ public class SwiperControlOnSwipeListener implements SwipeControlAction {
     @Override
     public void onRightClicked(int position) {
 
+        //delete tracking object from database
         DeleteTrackingTask deleteTrackingTask = new DeleteTrackingTask(activity, TrackingHolder.getINSTANCE().getTrackingList().get(position).getTrackingID());
         deleteTrackingTask.execute();
+
         TrackingHolder.getINSTANCE().deleteTracking(position);
 
         adapter.notifyItemRemoved(position);

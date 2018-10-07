@@ -25,7 +25,7 @@ public class UpdateTrackingTask extends AsyncTask<Void, Void, Void> {
         MyDatabaseManager dbManager = MyDatabaseManager.getInstance(activity);
         SQLiteDatabase db = dbManager.openDatabase();
 
-        db.update(MyDatabaseHelper.TRACKING_TABLE,values, "trackingID = "+ key, null);
+        db.update(MyDatabaseHelper.TRACKING_TABLE,values, "trackingID = ? ", new String[]{key});
 
 
         dbManager.closeDatabase();

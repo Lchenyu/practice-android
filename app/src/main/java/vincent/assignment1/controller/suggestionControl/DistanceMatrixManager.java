@@ -40,6 +40,7 @@ public class DistanceMatrixManager {
         this.prioritizedRouteList = new ArrayList<>();
         this.routeList = routeList;
 
+        Log.d("finalTest", "routelist in DM manager : " + routeList.size());
     }
 
 
