@@ -44,30 +44,4 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
-
-//    public void InsertTrackingDB(List<SimpleTracking> trackingList, SQLiteDatabase db){
-//        // called only
-//        ContentValues values = new ContentValues();
-//        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss aa");
-//
-//        for(SimpleTracking trackingObj : trackingList){
-//            values.put("trackingID", trackingObj.getTrackingID());
-//            values.put("trackable_id", trackingObj.getTrackableID());
-//            values.put("title", trackingObj.getTilte());
-//
-//            values.put("meetTime",dateformat.format(trackingObj.getMeetTime().getTime()));
-//            values.put("targetStartTime", dateformat.format(trackingObj.getTargetStartTime().getTime()));
-//            values.put("targetEndTime", dateformat.format(trackingObj.getTargetEndTime().getTime()));
-//
-//            values.put("curLocation", trackingObj.getCurLocation());
-//            values.put("meetLocation", trackingObj.getMeetLocation());
-//            db.insertWithOnConflict("tracking", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-//            values.clear();
-//        }
-//    }
-
-
-
-
 }

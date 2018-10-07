@@ -48,10 +48,10 @@
         android:id="@id/notify_time_before"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="40dp"
-        android:textSize="18sp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -71,4 +71,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/notify_time_before"
         app:layout_constraintVertical_bias="0.196" />
+
+    <Spinner
+        android:id="@+id/notify_time_spinner"
+        android:layout_width="102dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toEndOf="@+id/notify_time_before"
+        app:layout_constraintTop_toBottomOf="@+id/notify_tracking_meet_time" />
 </android.support.constraint.ConstraintLayout>

@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -27,6 +30,8 @@ public class AddNotifyActivity extends AppCompatActivity {
     private TextView meetTimeView;
     private TextView timeBeforeView;
     private Button notifyBtn;
+    private Spinner timeSpinner;
+    private int minute;
 
 
     @Override
@@ -38,9 +43,37 @@ public class AddNotifyActivity extends AppCompatActivity {
         meetTimeView = (TextView) findViewById(R.id.notify_tracking_meet_time);
         timeBeforeView = (TextView) findViewById(R.id.notify_time_before);
         notifyBtn = (Button) findViewById(R.id.notify_set_notify_btn);
-        timeBeforeView.setText("Notify by 1 minute before");
+        timeBeforeView.setText("Notify before (minute)");
 
         String trackingid = getIntent().getStringExtra("tracking_id");
+
+
+
+        timeSpinner = (Spinner) findViewById(R.id.notify_time_spinner);
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                new String[]{"1", "2", "3", "4", "5"}
+        );
+
+        // Specify the layout to use when the list of choices appears
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        timeSpinner.setAdapter(spinnerAdapter);
+
+
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                minute = Integer.valueOf(parent.getItemAtPosition(position).toString());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         final SimpleTracking trackingObject = getTrackingObject(trackingid);
 
@@ -84,7 +117,7 @@ public class AddNotifyActivity extends AppCompatActivity {
         cal.set(Calendar.HOUR_OF_DAY, meetTime.getHours());
         cal.set(Calendar.MINUTE, meetTime.getMinutes());
 
-        cal.add(Calendar.MINUTE, -1);
+        cal.add(Calendar.MINUTE, -minute);
 
         Log.d(TAG_STAGE + getClass().getName(), "notify time: " + cal.getTime());
 

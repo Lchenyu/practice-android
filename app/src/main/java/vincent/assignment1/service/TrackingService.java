@@ -167,9 +167,6 @@ public class TrackingService
       for (TrackingInfo trackingInfo : trackingList)
          if (dateInRange(trackingInfo.date, date, periodMinutes, periodSeconds))
             returnList.add(trackingInfo);
-
-      Log.d("finaltest","tracking list in TrackingService : "+ trackingList.size());
-      Log.d("finaltest","return list in TrackingService : "+ returnList.size());
       return returnList;
    }
 }

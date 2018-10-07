@@ -60,7 +60,7 @@ public class DistanceMatrixManager {
 
                 HttpClient httpClient = new DefaultHttpClient();
 
-                Log.d(TAG_STAGE + getClass().getName(), "Http request run");
+                Log.d(TAG_STAGE + getClass().getName(), "Http request run, URL : " + disMatrixURL );
 
                 HttpGet getRequest = new HttpGet(disMatrixURL);
 

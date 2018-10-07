@@ -105,26 +105,4 @@ public class SuggestionTrackableManager {
         }
         return curMatchList;
     }
-
-
-//    private int getMeasurableTime(Date date){
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-//
-//        String strDate = dateFormat.format(date);
-//
-//        Log.d("maptest", " time: "+ strDate);
-//        String[] splitedDate = strDate.split(":");
-//        int hh = Integer.valueOf(splitedDate[0]);
-//        int mm = Integer.valueOf(splitedDate[1]);
-//        int ss = Integer.valueOf(splitedDate[2]);
-//
-//        return hh* 60 * 60 + mm * 60 + ss;
-//    }
-//
-//    private int getDiff(int date1, int date2){
-//        return Math.abs(date1 - date2);
-//    }
-
-
-
 }
